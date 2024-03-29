@@ -56,7 +56,6 @@
                 </executions>
                 <configuration>
                     <sourceDirectory>src/main/java/com/sql/parse/seasar/g4</sourceDirectory>
-                    <packageName>com.sql.parse.seasar.gen</packageName>
                     <listener>true</listener>
                     <visitor>true</visitor>
                 </configuration>
