@@ -4,7 +4,7 @@ grammar SeasarSql;
 package com.sql.parse.seasar.gen;
 }
 // 解析器规则
-query: selectClause fromClause whereClause? orderByClause?;
+query: selectClause fromClause whereClause? groupClause? orderByClause?;
 
 selectClause
         : SELECT selectItem (',' selectItem )*
@@ -15,50 +15,60 @@ fromClause: FROM tableSource (joinClause | conditionalJoin)*;
 tableSource: '(' subQuery ')' alias | subQuery
         | IDENTIFIER
         ;
-alias: IDENTIFIER;
+alias
+    : IDENTIFIER
+    | AS? IDENTIFIER
+    ;
 joinClause: LEFT JOIN tableSource ON condition
         | INNER JOIN tableSource ON condition
         ;
-conditionalJoin: seasarConditional joinClause seasarEnd;
+conditionalJoin: seasarConditional | joinClause | seasarEnd;
 seasarConditional: '/*IF' condition '*/';
 whereClause: WHERE condition;
+groupClause: GROUP BY groupItemList;
+groupItemList: groupItem (',' groupItem)*;
+groupItem: column | expression;
 orderByClause: ORDER BY orderItemList;
 orderItemList: orderItem (',' orderItem)*;
 orderItem: column | expression | functionCall | stringLiteral orderDirection?;
 orderDirection: ASC | DESC;
 seasarEnd: '/*END*/';
 subQuery: SELECT column FROM DUAL;
-//condition: IDENTIFIER ('!=' | '==') NULL
-//         | IDENTIFIER '=' NUMBER
-//         | STRING BETWEEN IDENTIFIER AND IDENTIFIER
-//         | IDENTIFIER '=' IDENTIFIER
-//         | IDENTIFIER '==' NUMBER;
-functionCall: functionName '(' (expression (',' expression)*)? ')';
-//functionCall: functionName '(' (expression (',' expression)*)? ')'
-//           | nvlCall
-//           ;
+functionCall
+    : functionName '(' (expression (',' expression)*)? ')'
+    | functionName '(' expression ')' alias?
+    | nvlCall
+    | ifNotNullExpr
+    | ifNullExpr
+    ;
+
 nvlCall
     : NVL '(' expression ',' expression ')'
     ;
 nvlExpr
     : NVL '(' expression ',' expression ')'
     ;
-placeholder: SEASAR_PLACEHOLDER;
-SEASAR_PLACEHOLDER: '/*' IDENTIFIER '*/';
+condition
+    : expression (EQ expression)?
+    | expression BETWEEN expression AND expression
+    | placeholder
+    | conditionalStatement
+    ;
 conditionalStatement
         : '/*IF' condition '*/' selectItem '/*END*/'
         | IF_CONDITION codeBlock END_CONDITION
+        | IF_CONDITION selectItem END_CONDITION
         ;
-condition: expression; // 你需要定义如何匹配条件表达式
+placeholder
+    : '/*' IDENTIFIER '*/'
+    ;
 codeBlock
     : (anyStatement)+
     ;
 anyStatement
     : selectItem
-    // 添加更多的SQL语句或片段
     ;
 functionName: IDENTIFIER;
-//conditionalExpr: ifNotNullExpr | ifNullExpr;
 ifNotNullExpr: column;
 ifNullExpr: nvlExpr;
 expression: nvlExpr
@@ -77,9 +87,8 @@ stringLiteral: STRING;
 conditionalExpr
     : '/*IF' condition '*/' selectItem '/*END*/'
     | '/*IF' condition '*/' functionCall '/*END*/'
+    | expression EQ expression
     ;
-
-
 
 
 // 词法分析器规则
@@ -101,15 +110,17 @@ ASC: [aA][sS][cC];
 DESC: [dD][eE][sS][cC];
 TIMESTAMP: [tT][iI][mM][eE][sS][tT][aA][mM][pP];
 DATE: [dD][aA][tT][eE];
+GROUP : [gG][rR][oO][uU][pP];
+AS : [aA][sS];
 LT  : '<' ;
 GT  : '>' ;
+EQ : '=';
 SEMI: ';';
 NUMBER: [0-9]+;
 STRING: '\'' (~('\'') | '\\' .)* '\'';
 WS: [ \t\r\n]+ -> skip;
 COMMENT: '/*' .*? '*/' -> skip;
 LINE_COMMENT: '//' ~[\r\n]* -> skip;
-//SEASAR_PLACEHOLDER: '/*' IDENTIFIER '*/' -> skip;
 IF_CONDITION
     : '/*IF' .*? '*/' -> channel(HIDDEN)
     ;

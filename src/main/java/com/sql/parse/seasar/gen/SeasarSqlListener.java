@@ -120,6 +120,36 @@ public interface SeasarSqlListener extends ParseTreeListener {
 	 */
 	void exitWhereClause(SeasarSqlParser.WhereClauseContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link SeasarSqlParser#groupClause}.
+	 * @param ctx the parse tree
+	 */
+	void enterGroupClause(SeasarSqlParser.GroupClauseContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SeasarSqlParser#groupClause}.
+	 * @param ctx the parse tree
+	 */
+	void exitGroupClause(SeasarSqlParser.GroupClauseContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link SeasarSqlParser#groupItemList}.
+	 * @param ctx the parse tree
+	 */
+	void enterGroupItemList(SeasarSqlParser.GroupItemListContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SeasarSqlParser#groupItemList}.
+	 * @param ctx the parse tree
+	 */
+	void exitGroupItemList(SeasarSqlParser.GroupItemListContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link SeasarSqlParser#groupItem}.
+	 * @param ctx the parse tree
+	 */
+	void enterGroupItem(SeasarSqlParser.GroupItemContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SeasarSqlParser#groupItem}.
+	 * @param ctx the parse tree
+	 */
+	void exitGroupItem(SeasarSqlParser.GroupItemContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link SeasarSqlParser#orderByClause}.
 	 * @param ctx the parse tree
 	 */

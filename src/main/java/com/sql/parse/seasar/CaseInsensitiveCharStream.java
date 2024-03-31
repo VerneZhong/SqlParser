@@ -19,7 +19,6 @@ public class CaseInsensitiveCharStream implements CharStream {
 
     @Override
     public String getText(Interval interval) {
-//        return originalStream.getText(interval).toUpperCase();
         return originalStream.getText(interval);
     }
 

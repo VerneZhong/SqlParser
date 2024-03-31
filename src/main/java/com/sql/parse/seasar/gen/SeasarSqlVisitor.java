@@ -79,6 +79,24 @@ public interface SeasarSqlVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitWhereClause(SeasarSqlParser.WhereClauseContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link SeasarSqlParser#groupClause}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitGroupClause(SeasarSqlParser.GroupClauseContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SeasarSqlParser#groupItemList}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitGroupItemList(SeasarSqlParser.GroupItemListContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SeasarSqlParser#groupItem}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitGroupItem(SeasarSqlParser.GroupItemContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link SeasarSqlParser#orderByClause}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
