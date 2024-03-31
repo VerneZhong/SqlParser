@@ -4,16 +4,12 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
+import java.io.*;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
- * @author Mr.Zxb
+ * @author Mr.Zxb·
  * @description
  * @date 2024/03/31 11:51
  */
@@ -21,7 +17,7 @@ public class MybatisGenerator {
     public static void generator(TableInfo tableInfo) {
         // 伪代码
         try {
-            Configuration cfg = new Configuration(Configuration.VERSION_2_3_29);
+            Configuration cfg = new Configuration(Configuration.VERSION_2_3_32);
             // 设置模板加载的目录
             cfg.setDirectoryForTemplateLoading(new File("/Users/verne.zhong/IdeaProjects/SqlParser/src/main/java/com/sql/parse/seasar/mybatis/teamplates"));
             Template entityTemplate = cfg.getTemplate("Entity.ftl");
@@ -38,7 +34,15 @@ public class MybatisGenerator {
         } catch (IOException | TemplateException e) {
             throw new RuntimeException(e);
         }
+    }
 
+    public static void generateCode(Map<String, Object> dataModel, String templateName, File outputFile) throws Exception {
+        Configuration cfg = new Configuration(Configuration.VERSION_2_3_32);
+        cfg.setDirectoryForTemplateLoading(new File("/Users/verne.zhong/IdeaProjects/SqlParser/src/main/java/com/sql/parse/seasar/mybatis/teamplates"));
+        Template template = cfg.getTemplate(templateName);
 
+        try (Writer fileWriter = new FileWriter(outputFile)) {
+            template.process(dataModel, fileWriter);
+        }
     }
 }

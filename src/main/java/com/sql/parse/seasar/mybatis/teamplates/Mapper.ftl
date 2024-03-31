@@ -1,4 +1,3 @@
-// Mapper.ftl
 package ${package};
 
 public interface ${mapperName} {
