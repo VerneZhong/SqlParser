@@ -2392,7 +2392,9 @@ DOUBLE_PERIOD  : '..';
 PERIOD         : '.';
 
 // Seasar2 supports
-SEASAR2_PLACEHOLDER : '/*' ~[*/]* '*/';
+//SEASAR2_PLACEHOLDER : '/*' ~[*/]* '*/'; // ok -> /*torihikisakiCd*/
+SEASAR2_PLACEHOLDER : '/*' .*? '*/'; // 修改了匹配模式，确保它能够匹配任何在`/*` 和 `*/` 之间的内容。
+
 
 //{ Rule #238 <EXACT_NUM_LIT>
 //  This rule is a bit tricky - it resolves the ambiguity with <PERIOD>

@@ -6309,6 +6309,7 @@ condition
     | expression (EQUALS_OP | NOT_EQUAL_OP | GREATER_THAN_OP | LESS_THAN_OP | GREATER_THAN_OR_EQUAL | LESS_THAN_OR_EQUAL) expression
     | JSON_EQUAL '(' expressions ')'
     | SEASAR2_PLACEHOLDER
+    | expression SEASAR2_PLACEHOLDER expression // 允许占位符在两个表达式之间
     ;
 
 expressions

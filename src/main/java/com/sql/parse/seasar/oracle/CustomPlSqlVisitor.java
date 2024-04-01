@@ -75,7 +75,4 @@ public class CustomPlSqlVisitor extends PlSqlParserBaseVisitor<Void> {
         return visitChildren(ctx);
     }
 
-    public String getCurrentTableName() {
-        return tableNames.isEmpty() ? null : tableNames.peek();
-    }
 }
